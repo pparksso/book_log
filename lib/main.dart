@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:book_log/theme/app_theme.dart';
 import 'package:book_log/models/book_review.dart';
-import 'package:book_log/screens/calendar.dart';
-import 'package:book_log/screens/bookshelf.dart';
-import 'package:book_log/screens/review.dart';
-import 'package:book_log/screens/tag.dart';
-import 'package:book_log/screens/setting.dart';
 import 'package:book_log/constants/colors.dart';
+import 'package:book_log/router/index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,57 +21,44 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // theme: AppTheme.theme, // 마지막에 확인 후 수정해서 주석 해제하기
-      home: Scaffold(body: MainScreen()),
-    );
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   // theme: AppTheme.theme, // 마지막에 확인 후 수정해서 주석 해제하기
+    //   home: Scaffold(body: MainScreen()),
+    // );
+    return MaterialApp.router(routerConfig: router);
   }
 }
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int _currentIdx = 0;
-
-  void navigateToTab(int index) {
-    setState(() {
-      _currentIdx = index;
-    });
-  }
-
-  List<Widget> _pages = [
-    CalendarPage(),
-    BookShelfPage(),
-    ReviewPage(),
-    TagPage(),
-    SettingPage(),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _pages = [
-      CalendarPage(),
-      BookShelfPage(),
-      ReviewPage(
-        onBackPressed: () => navigateToTab(0),
-      ), // 전페이지로 이동되게 해야함.. 이건 0페이지로 이동됨
-      TagPage(),
-      SettingPage(),
-    ];
-  }
+class MainScreen extends StatelessWidget {
+  final Widget child;
+  const MainScreen({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIdx],
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _getCurrentIndex(context),
+        onTap: (idx) {
+          switch (idx) {
+            case 0:
+              context.push('/calendar');
+              break;
+            case 1:
+              context.push('/bookshelf');
+              break;
+            case 2:
+              context.push('/review');
+              break;
+            case 3:
+              context.push('/tag');
+              break;
+            case 4:
+              context.push('/setting');
+              break;
+          }
+        },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.shelves), label: ''),
@@ -107,12 +91,6 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.local_offer), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
         ],
-        currentIndex: _currentIdx,
-        onTap: (idx) {
-          setState(() {
-            _currentIdx = idx;
-          });
-        },
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColors.iconPrimary,
         unselectedItemColor: AppColors.iconSecondary,
@@ -120,5 +98,15 @@ class _MainScreenState extends State<MainScreen> {
         showUnselectedLabels: false, // 라벨 공간 제거
       ),
     );
+  }
+
+  int _getCurrentIndex(BuildContext context) {
+    final GoRouterState state = GoRouterState.of(context);
+    final location = state.uri.toString();
+    if (location == "/calendar") return 0;
+    if (location == "/bookshelf") return 1;
+    if (location == "/tag") return 3;
+    if (location == "/setting") return 4;
+    return 0;
   }
 }

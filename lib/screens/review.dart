@@ -1,11 +1,11 @@
 import 'package:book_log/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ReviewPage extends StatefulWidget {
   final bool isEditing;
-  final Function? onBackPressed;
 
-  const ReviewPage({super.key, this.isEditing = false, this.onBackPressed});
+  const ReviewPage({super.key, this.isEditing = false});
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -20,11 +20,7 @@ class _ReviewPageState extends State<ReviewPage> {
         elevation: 1.0,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          onPressed: () {
-            if (widget.onBackPressed != null) {
-              widget.onBackPressed!();
-            }
-          },
+          onPressed: () => GoRouter.of(context).pop(),
           icon: Icon(Icons.arrow_back, color: AppColors.primaryBlack),
         ),
         title: Text(''),
