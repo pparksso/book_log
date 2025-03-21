@@ -42,13 +42,34 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIdx = 0;
 
-  final List<Widget> _pages = [
+  void navigateToTab(int index) {
+    setState(() {
+      _currentIdx = index;
+    });
+  }
+
+  List<Widget> _pages = [
     CalendarPage(),
     BookShelfPage(),
     ReviewPage(),
     TagPage(),
     SettingPage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      CalendarPage(),
+      BookShelfPage(),
+      ReviewPage(
+        onBackPressed: () => navigateToTab(0),
+      ), // 전페이지로 이동되게 해야함.. 이건 0페이지로 이동됨
+      TagPage(),
+      SettingPage(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
