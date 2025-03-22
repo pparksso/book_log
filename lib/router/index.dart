@@ -48,3 +48,18 @@ final GoRouter router = GoRouter(
     ),
   ],
 );
+
+String getRoute(int idx) {
+  switch (idx) {
+    case 0:
+      return '/calendar';
+    case 1:
+      return '/bookshelf';
+    case 3:
+      return '/tag';
+    case 4:
+      return '/setting';
+    default:
+      return '/calendar';
+  }
+}

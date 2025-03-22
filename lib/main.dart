@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:book_log/theme/app_theme.dart';
+// import 'package:book_log/theme/app_theme.dart';
 import 'package:book_log/models/book_review.dart';
+import 'package:book_log/widgets/modal/add_book.dart';
 import 'package:book_log/constants/colors.dart';
 import 'package:book_log/router/index.dart';
 
@@ -41,22 +42,10 @@ class MainScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _getCurrentIndex(context),
         onTap: (idx) {
-          switch (idx) {
-            case 0:
-              context.push('/calendar');
-              break;
-            case 1:
-              context.push('/bookshelf');
-              break;
-            case 2:
-              context.push('/review');
-              break;
-            case 3:
-              context.push('/tag');
-              break;
-            case 4:
-              context.push('/setting');
-              break;
+          if (idx == 2) {
+            AddBookModal.show(context);
+          } else {
+            context.push(getRoute(idx));
           }
         },
         items: [

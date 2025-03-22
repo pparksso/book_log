@@ -27,8 +27,15 @@ class AppTextStyles {
 
   static const TextStyle bodyS = TextStyle(
     fontFamily: fontFamily,
-    fontSize: 14.0,
+    fontSize: 15.0,
     fontWeight: FontWeight.normal,
     color: AppColors.primaryBlack,
+  );
+
+  static const TextStyle modalBtnTxt = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.blue,
   );
 }
